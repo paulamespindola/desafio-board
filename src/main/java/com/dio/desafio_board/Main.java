@@ -2,21 +2,18 @@ package com.dio.desafio_board;
 
 
 import com.dio.desafio_board.persistence.migration.MigrationStrategy;
+import com.dio.desafio_board.ui.MainMenu;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import static com.dio.desafio_board.persistence.config.DatabaseConnectionManager.getConnection;
 
 public class Main {
 
     public static void main(String[] args) throws SQLException {
-        String url = "jdbc:postgresql://localhost:5433/board-dio";
-        String user = "postgres";
-        String password = "root";
-
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+        try(var connection = getConnection()){
             new MigrationStrategy(connection).executeMigration();
         }
-
+        new MainMenu().execute();
     }
 }
